@@ -1,17 +1,30 @@
+const twilio_version = require('twilio/package.json').version;
+
 exports.handler = function(context, event, callback) {
-let response = new Twilio.Response();
-  response.appendHeader("Access-Control-Allow-Origin", "*");
-  response.appendHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  response.appendHeader("Content-Type", "application/json");
-
-const accountSid = context.ACCOUNT_SID;
-const authToken = context.AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
-
-client.calls(event.callSID)
+  
+  console.log(`Entered ${context.PATH} node version ${process.version} twilio version ${twilio_version}`);
+  
+  let response = new Twilio.Response();
+  
+  let headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST,GET,OPTIONS",
+    "Access-Control-Allow-Headers": "*",
+    "Content-Type": "application/json"
+  };
+  
+  console.log(`updating ${event.callSID} to dial ${event.to}`);
+  
+  const client = context.getTwilioClient();
+  client.calls(event.callSID)
       .update({twiml: `<Response><Say>Transferring you to Acme</Say><Dial>${event.to}</Dial></Response>`})
       .then(call => {
+          response.setHeaders(headers);
           response.setBody(call.to);
-          callback(null, reasponse);
+          callback(null, response);
+      }).catch(error => {
+          response.setHeaders(headers);
+          callback(error, response);
       });
+      
 };
