@@ -29,3 +29,7 @@ You can test function locally by running the
 Deploy by running
 
 `$ twilio serverless:deploy`
+
+## Twilio Serverless Toolkit
+
+The above commands requires installation of [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) and [Serverless Toolkit](https://www.twilio.com/docs/labs/serverless-toolkit)
