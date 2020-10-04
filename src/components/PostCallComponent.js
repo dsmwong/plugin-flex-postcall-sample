@@ -20,8 +20,12 @@ class PostCallComponent extends React.Component {
 
   updateCall = () => {
   
-    var callSID = this.props.task.attributes.conference.participants.customer;
-    axios.get(`https://brass-chicken-6161.twil.io/postCallRedirect?callSID=${callSID}&to=${this.state.destinationNumber}`);
+    const callSID = this.props.task.attributes.conference.participants.customer;
+    const postCallRedirectUrl = 'Replace domain URL here https://some-domain/postCallRedirect'
+    axios.get(`${postCallRedirectUrl}?callSID=${callSID}&to=${this.state.destinationNumber}`)
+        .catch(e => {
+          console.log(e);
+        });
                                                                     
   }
 
